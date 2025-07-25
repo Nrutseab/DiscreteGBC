@@ -1,33 +1,40 @@
 import numpy as np
-from scipy.sparse import diags
-from scipy.sparse.linalg import eigsh
+from scipy.spatial import Delaunay
 
-def angle_defect(simplex, dihedral_angles):
-    """Compute angle defect at hinge"""
-    return 2*np.pi - np.sum(dihedral_angles)
+def compute_dihedral_angle(points):
+    """Compute dihedral angles for a tetrahedron"""
+    normals = []
+    for i in range(4):
+        face = np.delete(points, i, axis=0)
+        vec1 = face[1] - face[0]
+        vec2 = face[2] - face[0]
+        normal = np.cross(vec1, vec2)
+        normals.append(normal / np.linalg.norm(normal))
+    
+    angles = []
+    for i in range(4):
+        for j in range(i+1, 4):
+            cos_angle = np.dot(normals[i], normals[j])
+            angle = np.arccos(np.clip(cos_angle, -1, 1))
+            angles.append(angle)
+            
+    return angles
 
-def discrete_ricci_curvature(vertex, neighbors, defects, dual_vol):
-    """Compute discrete Ricci curvature at vertex"""
-    hinge_defects = [defects[h] for h in neighbors]
-    return np.sum(hinge_defects) / dual_vol
+def angle_defect(complex, hinge):
+    """Compute angle defect at a hinge"""
+    total_angle = 0
+    for tet in complex.tets_containing_hinge(hinge):
+        points = complex.get_points(tet)
+        angles = compute_dihedral_angle(points)
+        total_angle += angles[complex.hinge_index(hinge, tet)]
+        
+    return 2 * np.pi - total_angle
 
-def discrete_scalar_curvature(vertex, neighbors, defects, dual_vol):
-    """Compute discrete scalar curvature"""
-    return len(neighbors) / dual_vol
-
-def gbc_integral(complex):
-    """Compute Gauss-Bonnet-Chern integral"""
+def discrete_gbc_integral(complex):
+    """Compute the Gauss-Bonnet-Chern integral"""
     total = 0
     for hinge in complex.hinges:
-        defect = angle_defect(hinge, complex.dihedral_angles[hinge])
+        defect = angle_defect(complex, hinge)
         dual_vol = complex.dual_volume(hinge)
         total += defect * dual_vol
     return total
-
-def euler_characteristic(complex):
-    """Compute Euler characteristic"""
-    V = len(complex.vertices)
-    E = len(complex.edges)
-    F = len(complex.faces)
-    T = len(complex.tetrahedra) if hasattr(complex, 'tetrahedra') else 0
-    return V - E + F - (T if T > 0 else 0)
