@@ -2,11 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains the implementation for the paper:
-
-> **A Discrete Gauss–Bonnet–Chern Theorem: Foundations, Flows, Limits, and Experimental Verifications**  
-> Chew Yi  
-
 ## Key Features
 
 1. **Discrete Riemannian Geometry Core**
