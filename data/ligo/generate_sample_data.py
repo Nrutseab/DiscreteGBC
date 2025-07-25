@@ -26,6 +26,20 @@ def create_ligo_event(filename, mass=2.6, defect=0.14, noise_level=0.2):
         grp.attrs['mass'] = mass
         grp.attrs['defect'] = defect
 
+def generate_all_events():
+    events = {
+        "GW150914": (35.0, 0.08),   # First BH-BH detection
+        "GW170817": (1.4, 0.12),     # Neutron star merger
+        "GW230529": (2.6, 0.14),     # Recent mass-gap event
+        "GW190814": (23.0, 0.09)     # Mystery object event
+    }
+    
+    for event, params in events.items():
+        filename = f"data/ligo/{event}.hdf5"
+        print(f"Generating {event} with mass={params[0]} M☉, defect={params[1]} rad")
+        create_ligo_event(filename, mass=params[0], defect=params[1])
+
 if __name__ == "__main__":
-    create_ligo_event("data/ligo/GW230529.hdf5", mass=2.6, defect=0.14)
-    create_ligo_event("data/ligo/GW150914.hdf5", mass=35.0, defect=0.08)
+    generate_all_events(
+        
+    )
