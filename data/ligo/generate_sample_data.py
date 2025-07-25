@@ -2,8 +2,11 @@ import h5py
 import numpy as np
 from physics.gravitational_waves import tetrahedral_waveform
 
-def create_ligo_event(filename, mass=2.6, defect=0.14, noise_level=0.2):
+def create_ligo_event(filename, mass=2.6, defect=0.14, noise_level=0.2, seed=None):
     """Generate sample LIGO event data with tetrahedral signal"""
+    if seed is not None:
+        np.random.seed(seed)
+        
     sampling_rate = 4096  # Hz
     duration = 0.5  # seconds
     t = np.arange(0, duration, 1/sampling_rate)
@@ -28,18 +31,16 @@ def create_ligo_event(filename, mass=2.6, defect=0.14, noise_level=0.2):
 
 def generate_all_events():
     events = {
-        "GW150914": (35.0, 0.08),   # First BH-BH detection
-        "GW170817": (1.4, 0.12),     # Neutron star merger
-        "GW230529": (2.6, 0.14),     # Recent mass-gap event
-        "GW190814": (23.0, 0.09)     # Mystery object event
+        "GW150914": {'mass': 35.0, 'defect': 0.08, 'seed': None},
+        "GW170817": {'mass': 1.4, 'defect': 0.12, 'seed': None},
+        "GW230529": {'mass': 2.6, 'defect': 0.14, 'seed': 123},  # Fixed seed for reproducibility
+        "GW190814": {'mass': 23.0, 'defect': 0.09, 'seed': None}
     }
     
     for event, params in events.items():
         filename = f"data/ligo/{event}.hdf5"
-        print(f"Generating {event} with mass={params[0]} M☉, defect={params[1]} rad")
-        create_ligo_event(filename, mass=params[0], defect=params[1])
+        print(f"Generating {event} with params: {params}")
+        create_ligo_event(filename, **params)
 
 if __name__ == "__main__":
-    generate_all_events(
-        
-    )
+    generate_all_events()
