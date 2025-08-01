@@ -1,7 +1,7 @@
 # Discrete Riemannian Geometry Framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![DOI](https://zenodo.org/badge/DOI/16692317.svg)](https://doi.org/10.5281/zenodo.16692317)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16692317.svg)](https://doi.org/10.5281/zenodo.16692317)
 
 ## Key Features
 
