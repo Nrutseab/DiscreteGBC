@@ -1,0 +1,51 @@
+name: discrete-gbc
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Core scientific computing
+  - python=3.10
+  - numpy
+  - scipy
+  - pandas
+  - numba
+  
+  # Geometry processing
+  - trimesh
+  - pygmsh
+  - meshio
+  
+  # Gravitational wave analysis
+  - h5py
+  - gwpy
+  - corner
+  
+  # Visualization
+  - matplotlib
+  - plotly
+  - pyvista
+  - imageio-ffmpeg
+  
+  # Jupyter for notebooks
+  - jupyter
+  - ipywidgets
+  
+  # Verification tools
+  - scikit-learn  # For statistical analysis
+  - tqdm          # Progress bars
+  
+  # Build tools
+  - pip
+  - cmake
+  - make
+  
+  # Additional Python packages via pip
+  - pip:
+    - einops              # Tensor operations
+    - gwhunter            # Custom LIGO tools
+    - arviz               # Bayesian visualization
+    - pycbc               # Gravitational wave toolkit
+    - astropy             # Astronomical units
+    - pyshtools           # Spherical harmonics
+    - potpourri3d         # Geometry processing
+    - discrete-diffgeo    # Discrete differential geometry
